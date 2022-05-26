@@ -75,7 +75,7 @@ namespace CloudSync.Services
         {
             try
             {
-                var request = $"{api}?{query}";
+                var request = $"{api}{query}";
                 var result2 = await request.GetAsJson<T>(token);
                 return result2;
             }
