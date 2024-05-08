@@ -7,10 +7,11 @@ using System;
 using HSDT.AutoSync.Process;
 using System.Threading.Tasks;
 using HSDT.Common.Helper;
+using CloudSync.Process.Dto;
 
 namespace CloudSync.Process
 {
-    public class GetPhieuDonTiepPubSub: QueueJobProcess<object>
+    public class GetPhieuDonTiepPubSub: QueueJobProcess<PhieuDonTiepDto[]>
     {
         private string latestMessageToken = string.Empty;
 
@@ -65,7 +66,7 @@ namespace CloudSync.Process
             var apiCloudGetUrl = Config.FindValue("CloudGetUrl");
             if (apiCloudGetUrl.IsNullOrEmpty())
             {
-                logger.Error($"ApiGetUrl: is missing!");
+                logger.Error($"CloudGetUrl: is missing!");
                 return;
             }
 
@@ -75,7 +76,7 @@ namespace CloudSync.Process
             {
                 logger.Info("0.1. Pulling ketqua phieu don tiep...");
                 var authToken = Config.FindValue("CloudToken");
-                var vListResult = await $"{apiCloudGetUrl}?msgToken={token}".GetAsJson<object>(authToken);
+                var vListResult = await $"{apiCloudGetUrl}?msgToken={token}".GetAsJson<PhieuDonTiepDto[]>(authToken);
                 if (vListResult != null)
                 {
                     logger.Info($"1.1. Pulled new result: data={JsonConvert.SerializeObject(vListResult)}");
@@ -108,7 +109,7 @@ namespace CloudSync.Process
         /// </summary>
         /// <param name="data"></param>
         /// <exception cref="HSCoreException"></exception>
-        protected override void Process(object data)
+        protected override void Process(PhieuDonTiepDto[] data)
         {
             var vApiUrl = Config.GetValue<string>("ApiHisUrl")
                 ?? throw new HSCoreException("Chưa có cấu hình ApiHisUrl", HSCoreError.ERROR_INVALID_PARAMETER);
