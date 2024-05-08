@@ -1,0 +1,12 @@
+﻿{
+  "Enabled": false,
+  "JobInterval": "* * * * *",
+  "Domain": "bvdkquocoai",
+  "Timer": 1000,
+  "TimerProcess":  5000,
+  "ApiHisUrl": "http://localhost:9999",
+  "ApiAutoSync": "http://localhost:5005",
+  "ImportLichKham": "LichKham",
+  "ApiToken": "f77c3aa2-786f-4067-b77c-55847fef3d1d",
+  "AuthToken": "1ebd60f4896186d5d44ee4b2ed295f055423b52e78fbdc9e00067886a59091d0|eua4WR7sMTfIBzgofFcM"
+}
