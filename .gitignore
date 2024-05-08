@@ -262,3 +262,7 @@ __pycache__/
 
 # other
 .vs
+
+# App files
+appsettings.Development.json
+appsettings.Production.json

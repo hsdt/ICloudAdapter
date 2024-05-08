@@ -1,0 +1,9 @@
+{
+  "Enabled": true,
+  "ApiHisUrl": "http://localhost:9000",
+  "ApiPostPhieuDonTiep": "api/LichKham",
+  "ApiHisToken": "changeme",
+  "CloudGetUrl": "",
+  "CloudToken": "",
+  "Channel": "lichkham/pending"
+}
