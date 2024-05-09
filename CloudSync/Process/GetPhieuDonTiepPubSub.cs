@@ -75,7 +75,13 @@ namespace CloudSync.Process
             {
                 logger.Info("0.1. Pulling ketqua phieu don tiep...");
                 var authToken = Config.FindValue("CloudToken");
-                var vListResult = await $"{apiCloudGetUrl}?msgToken={token}".GetAsJson<object>(authToken);
+                var vLane = Config.GetValue<string>("Lane");
+                var apiMethodUrl = $"{apiCloudGetUrl}?msgToken={token}";
+                if (vLane.IsNotNullOrEmpty())
+                {
+                    apiMethodUrl += $"&lane={vLane}";
+                }
+                var vListResult = await apiMethodUrl.GetAsJson<object>(authToken);
                 if (vListResult != null)
                 {
                     logger.Info($"1.1. Pulled new result: data={JsonConvert.SerializeObject(vListResult)}");
