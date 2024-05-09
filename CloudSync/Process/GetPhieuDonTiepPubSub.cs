@@ -11,7 +11,7 @@ using CloudSync.Process.Dto;
 
 namespace CloudSync.Process
 {
-    public class GetPhieuDonTiepPubSub: QueueJobProcess<PhieuDonTiepDto[]>
+    public class GetPhieuDonTiepPubSub: QueueJobProcess<object>
     {
         private string latestMessageToken = string.Empty;
 
@@ -21,6 +21,7 @@ namespace CloudSync.Process
         /// </summary>
         protected override void PostInitialize()
         {
+            // TODO: Cập nhật cấu hình CloudToken vào file cấu hình Config/GetPhieuDonTiepPubSub.json
             var authCloudToken = Config.FindValue("CloudToken");
             var subChannel = Config.GetValue("Channel", "lichkham/pending");
             var infoToken = authCloudToken.Substring(0, 6);
@@ -76,7 +77,7 @@ namespace CloudSync.Process
             {
                 logger.Info("0.1. Pulling ketqua phieu don tiep...");
                 var authToken = Config.FindValue("CloudToken");
-                var vListResult = await $"{apiCloudGetUrl}?msgToken={token}".GetAsJson<PhieuDonTiepDto[]>(authToken);
+                var vListResult = await $"{apiCloudGetUrl}?msgToken={token}".GetAsJson<object>(authToken);
                 if (vListResult != null)
                 {
                     logger.Info($"1.1. Pulled new result: data={JsonConvert.SerializeObject(vListResult)}");
@@ -109,8 +110,13 @@ namespace CloudSync.Process
         /// </summary>
         /// <param name="data"></param>
         /// <exception cref="HSCoreException"></exception>
-        protected override void Process(PhieuDonTiepDto[] data)
+        protected override void Process(object data)
         {
+            if (data is null)
+            {
+                return;
+            }
+            // TODO: Cập nhật cấu hình gửi Lịch khám về HIS cho đúng.
             var vApiUrl = Config.GetValue<string>("ApiHisUrl")
                 ?? throw new HSCoreException("Chưa có cấu hình ApiHisUrl", HSCoreError.ERROR_INVALID_PARAMETER);
             var vApiPostPhieuDonTiep = Config.GetValue<string>("ApiPostPhieuDonTiep")
@@ -118,21 +124,18 @@ namespace CloudSync.Process
             var vTokenKey = Config.GetValue("ApiHisToken", "");
             var client = new RestClient(vApiUrl);
             // Gửi kết quả về HIS.
-            var vSendHisRequest = new RestRequest(vApiPostPhieuDonTiep, Method.Post)
-            .AddHeader("Authorization", vTokenKey)
-            .AddJsonBody(new
-            {
-                data,
-            });
+            var vRequest = new RestRequest(vApiPostPhieuDonTiep, Method.Post)
+                .AddHeader("Authorization", vTokenKey)
+                .AddJsonBody(data.ToString());
             // Send request
-            var vUpdateTaskResponse = client.ExecuteAsync<string>(vSendHisRequest).Result;
-            if (vUpdateTaskResponse.IsSuccessful)
+            var vResponse = client.ExecuteAsync<string>(vRequest).Result;
+            if (vResponse.IsSuccessStatusCode)
             {
-                logger.Info($"2. Gửi cập nhật kết quả phiếu khám thành công, result={vUpdateTaskResponse.Content}");
+                logger.Info($"2. Gửi kết quả thành công,status={vResponse.StatusCode},result={vResponse.Content}");
             }
             else
             {
-                logger.Error($"2. Gửi cập nhật trạng thái thanh toán phiếu khám về HIS thất bại, error={vUpdateTaskResponse.Content}, data={JsonConvert.SerializeObject(data)}");
+                logger.Error($"2. Gửi kết quả thất bại,status={vResponse.StatusCode},error={vResponse.Content}, data={JsonConvert.SerializeObject(data)}");
             }
         }
     }
