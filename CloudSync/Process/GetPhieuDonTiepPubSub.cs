@@ -1,13 +1,11 @@
 ﻿using CQDT.CloudClient;
 using HSDT.Common.Exceptions;
-using HSDT.Common;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
 using HSDT.AutoSync.Process;
 using System.Threading.Tasks;
 using HSDT.Common.Helper;
-using CloudSync.Process.Dto;
 
 namespace CloudSync.Process
 {
@@ -122,11 +120,12 @@ namespace CloudSync.Process
             var vApiPostPhieuDonTiep = Config.GetValue<string>("ApiPostPhieuDonTiep")
                 ?? throw new HSCoreException("ApiPostPhieuDonTiep: is mising.", HSCoreError.ERROR_INVALID_PARAMETER);
             var vTokenKey = Config.GetValue("ApiHisToken", "");
+            var vJsonData = data.ToString();
             var client = new RestClient(vApiUrl);
             // Gửi kết quả về HIS.
             var vRequest = new RestRequest(vApiPostPhieuDonTiep, Method.Post)
                 .AddHeader("Authorization", vTokenKey)
-                .AddJsonBody(data.ToString());
+                .AddJsonBody(vJsonData);
             // Send request
             var vResponse = client.ExecuteAsync<string>(vRequest).Result;
             if (vResponse.IsSuccessStatusCode)
@@ -135,7 +134,7 @@ namespace CloudSync.Process
             }
             else
             {
-                logger.Error($"2. Gửi kết quả thất bại,status={vResponse.StatusCode},error={vResponse.Content}, data={JsonConvert.SerializeObject(data)}");
+                logger.Error($"2. Gửi kết quả thất bại,status={vResponse.StatusCode},error={vResponse.Content}, data={vJsonData}");
             }
         }
     }
