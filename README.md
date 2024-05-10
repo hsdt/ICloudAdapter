@@ -2,6 +2,7 @@
 ## - Cài đặt Visual studio 2022
 ## - .NET 7
 
+
 # Cấu hình Deployment
 ## - Cấu hình trong file Config/GetPhieuDonTiepPubSub.json
 ```json
@@ -23,3 +24,15 @@
 - `CloudToken`: Token truy cập dữ liệu vào Cloud (do Cloud cung cấp)
 - `Channel`: Tên channel nhận dữ liệu phiếu đón tiếp (mặc định do Cloud cung cấp)
 - `Lane`: Tên kênh lane nhận dữ liệu, khi cấu hình nhiều kênh (mặc định để trống)
+
+  
+## - Build dự án:
+### + Windows: 
+```bash
+dotnet publish -r win-x64 -c Release
+```
+
+### + Linux: 
+```bash
+dotnet publish -r linux-64 -c Release
+```
