@@ -1,4 +1,5 @@
 ﻿using CloudSync.Services;
+using HSDT.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -56,6 +57,7 @@ namespace CloudSync.Controllers
         public async Task<IActionResult> PostBody(string api, [FromBody] object body)
         {
             var vResult = await _svCloud.PostObject(api, body, Token);
+            this.Log($"Post {api} ok!");
             return Ok(vResult);
         }
 
@@ -71,6 +73,7 @@ namespace CloudSync.Controllers
         {
             var vQuery = this.Request.QueryString.Value;
             var vResult = await _svCloud.Get<object>(api, vQuery, Token);
+            this.Log($"Get {api} ok!");
             return Ok(vResult);
         }
         #endregion

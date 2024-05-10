@@ -1,0 +1,10 @@
+{
+  "Enabled": true,
+  "ApiHisUrl": "https://httpbin.org",
+  "ApiPostPhieuDonTiep": "post",
+  "ApiHisToken": "changeme",
+  "CloudGetUrl": "",
+  "CloudToken": "",
+  "Channel": "lichkham/pending",
+  "Lane": ""
+}
