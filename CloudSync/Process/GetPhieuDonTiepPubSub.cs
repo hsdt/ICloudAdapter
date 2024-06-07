@@ -130,8 +130,11 @@ namespace CloudSync.Process
             var client = new RestClient(vApiUrl);
             // Gửi kết quả về HIS.
             var vRequest = new RestRequest(vApiPostPhieuDonTiep, Method.Post)
-                .AddHeader("Authorization", vTokenKey)
                 .AddJsonBody(vJsonData);
+            if (vTokenKey.IsNotNullOrEmpty())
+            {
+                vRequest.AddHeader("Authorization", vTokenKey);
+            }
             // Send request
             var vResponse = client.ExecuteAsync<string>(vRequest).Result;
             if (vResponse.IsSuccessStatusCode)
