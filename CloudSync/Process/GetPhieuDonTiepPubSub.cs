@@ -22,10 +22,10 @@ namespace CloudSync.Process
             // TODO: Cập nhật cấu hình CloudToken vào file cấu hình Config/GetPhieuDonTiepPubSub.json
             var authCloudToken = Config.FindValue("CloudToken");
             var subChannel = Config.GetValue("Channel", "lichkham/pending");
-            var infoToken = authCloudToken.Substring(0, 6);
-            if (!PubSubHelper.Initialize(authCloudToken).Wait(10000))
+            var infoToken = authCloudToken?.Substring(0, 6) ?? "NULL";
+            if (authCloudToken is null || !PubSubHelper.Initialize(authCloudToken).Wait(10000))
             {
-                logger.Error($"Không thể khởi tạo Pubsub => Không thể chạy! Vui lòng kiểm tra, token={infoToken}...");
+                logger.Error($"Cannot init Pubsub => Please verify CloudToken, token={infoToken}...");
                 return;
             }
             logger.Info($"PubSubHelper.Initialize ok!: token={infoToken}...");
