@@ -15,6 +15,9 @@
     <PackageReference Include="CQDT.CloudClient" Version="1.6.0.2" />
     <PackageReference Include="HSDT.AutoSync" Version="1.0.7" />
     <PackageReference Include="HSDT.Common" Version="1.1.6" />
+    <PackageReference Include="Topshelf" Version="4.3.0" />
+    <PackageReference Include="Topshelf.NLog" Version="4.3.0" />
+    <PackageReference Include="Topshelf.Extensions.Hosting" Version="0.4.0" />
   </ItemGroup>
 
 </Project>
