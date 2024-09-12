@@ -30,6 +30,14 @@ namespace CloudSync
                 hc.RunAsLocalSystem();
                 hc.StartAutomatically();
                 hc.UseNLog();
+            }, hc =>
+            {
+                // Start embedded-process loader.
+                ProcessLoader.Load("CloudSync.dll");
+            }, hc =>
+            {
+                // Stop all AutoSync Background services.
+                ProcessLoader.Stop();
             });
         }
 
@@ -51,8 +59,6 @@ namespace CloudSync
                     .AddJsonFile("appsettings.json", true, true)
                     .AddJsonFile($"appsettings.{hostingEnv}.json", true, true)
                     .AddEnvironmentVariables();
-                // Start embedded-process loader.
-                ProcessLoader.Load("CloudSync.dll");
             })
             .UseNLog(new NLogAspNetCoreOptions()
             {
