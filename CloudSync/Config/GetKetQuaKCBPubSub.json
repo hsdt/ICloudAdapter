@@ -1,0 +1,10 @@
+{
+  "Enabled": true,
+  "ApiHisKqKCBUrl": "https://httpbin.org",
+  "ApiPostKetQuaKCB": "post",
+  "ApiHisToken": "changeme",
+  "CloudGetUrl": "",
+  "CloudToken": "",
+  "Channel": "phieukhamkq/pending",
+  "Lane": ""
+}
