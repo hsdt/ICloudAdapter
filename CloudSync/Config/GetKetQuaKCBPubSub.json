@@ -1,10 +1,10 @@
 {
   "Enabled": true,
-  "ApiHisKqKCBUrl": "https://httpbin.org",
-  "ApiPostKetQuaKCB": "post",
-  "ApiHisToken": "changeme",
-  "CloudGetUrl": "",
-  "CloudToken": "",
+  "ApiHisKqKCBUrl": "https://apiv3.bookie.vn/",
+  "ApiPostKetQuaKCB": "bvdkquocoai/EHRData/sync",
+  "ApiHisToken": "aa88ec60-b1dc-488a-8e18-a28bc34e2e01",
+  "CloudGetUrl": "bookie-phieukhamkq-list",
+  "CloudToken": "b6408c6b596b39e8ce650e56c3aaac9aaa4d0d19a4437180d3caebdc15e70540|5a07f709d9e6a856",
   "Channel": "phieukhamkq/pending",
   "Lane": ""
 }

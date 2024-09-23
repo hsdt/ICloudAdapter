@@ -130,14 +130,13 @@ namespace CloudSync.Process
             var vApiPostKQKCB = Config.GetValue<string>("ApiPostKetQuaKCB")
                 ?? throw new HSCoreException("ApiPostKqKCB: is mising.", HSCoreError.ERROR_INVALID_PARAMETER);
             var vTokenKey = Config.GetValue("ApiHisToken", "");
-            var vJsonData = data.ToString();
             var client = new RestClient(vApiUrl);
             // Gửi kết quả về HIS.
             var vRequest = new RestRequest(vApiPostKQKCB, Method.Post)
-                .AddJsonBody(vJsonData);
+                .AddJsonBody(data);
             if (vTokenKey.IsNotNullOrEmpty())
             {
-                vRequest.AddHeader("Authorization", vTokenKey);
+                vRequest.AddHeader("ApiKey", vTokenKey);
             }
             // Send request
             var vResponse = client.ExecuteAsync<string>(vRequest).Result;
@@ -147,7 +146,7 @@ namespace CloudSync.Process
             }
             else
             {
-                logger.Error($"2. Gửi kết quả thất bại,status={vResponse.StatusCode},error={vResponse.Content}, data={vJsonData}");
+                logger.Error($"2. Gửi kết quả thất bại,status={vResponse.StatusCode},error={vResponse.Content}, data=...");
             }
         }
     }
@@ -156,5 +155,7 @@ namespace CloudSync.Process
     {
         public Guid Id { get; set; }
         public string XMLData { get; set; }
+        public string MaLanKham { get; set; }
+        public string CCCD { get; set; }
     }
 }
