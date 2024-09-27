@@ -30,6 +30,7 @@
 ### + Windows: 
 ```bash
 dotnet publish -r win-x64 -c Release
+dotnet publish CloudSync/CloudSync.csproj -c Release -r win-x64 --self-contained -o publish
 ```
 
 ### + Linux: 
