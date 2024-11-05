@@ -16,7 +16,7 @@ on: [push]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -42,10 +42,12 @@ jobs:
       #   run: dotnet test
       - name: Publish
         run: dotnet publish CloudSync -r linux-x64 -c Release -o Dist
+      - name: Zip
+        run: zip -r Dist.zip Dist/ README.md
       - name: Upload
-        # if: github.event_name == 'release' && github.event.action == 'published'
-        uses: actions/upload-artifact@v4
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-            name: release-linux-${{ github.ref_name }}
-            path: Dist
+          name: CloudSync-${{ github.ref_name }}.zip
+          files: Dist.zip
 
