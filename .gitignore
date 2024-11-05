@@ -9,6 +9,8 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
+Dist
+CloudSyncDist
 
 # Build results
 [Dd]ebug/
