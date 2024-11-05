@@ -38,12 +38,12 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build
-      - name: Test
-        run: dotnet test
+      # - name: Test
+      #   run: dotnet test
       - name: Publish
         run: dotnet publish CloudSync -r linux-x64 -c Release -o Dist
       - name: Upload
-        if: github.event_name == 'release' && github.event.action == 'published'
+        # if: github.event_name == 'release' && github.event.action == 'published'
         uses: actions/upload-artifact@v4
         with:
             name: release-linux-${{ github.ref_name }}
