@@ -77,12 +77,13 @@ namespace CloudSync.Process
                 logger.Info("0.1. Pulling ketqua kcb...");
                 var authToken = Config.FindValue("CloudToken");
                 var vLane = Config.GetValue<string>("Lane");
+                 var sNodeCQS = Config.GetValue("urlCQSNode", "");
                 var apiMethodUrl = $"{apiCloudGetUrl}?msgToken={token}";
                 if (vLane.IsNotNullOrEmpty())
                 {
                     apiMethodUrl += $"&lane={vLane}";
                 }
-                var vListResult = await apiMethodUrl.GetAsJson<VMData[]>(authToken);
+                var vListResult = await apiMethodUrl.GetAsJson<VMData[]>(authToken, sNodeCQS);
                 if (vListResult != null)
                 {
                     logger.Info($"1.1. Pulled new result: data={JsonConvert.SerializeObject(vListResult)}");
