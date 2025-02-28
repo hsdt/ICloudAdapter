@@ -9,7 +9,7 @@ using HSDT.Common.Helper;
 
 namespace CloudSync.Process
 {
-    public class GetPhieuDonTiepPubSub: QueueJobProcess<object>
+    public class GetPhieuDonTiepPubSub : QueueJobProcess<object>
     {
         private string latestMessageToken = string.Empty;
 
@@ -22,8 +22,9 @@ namespace CloudSync.Process
             // TODO: Cập nhật cấu hình CloudToken vào file cấu hình Config/GetPhieuDonTiepPubSub.json
             var authCloudToken = Config.FindValue("CloudToken");
             var subChannel = Config.GetValue("Channel", "lichkham/pending");
+            var sNodeCQS = Config.GetValue("urlCQSNode", "");
             var infoToken = authCloudToken?.Substring(0, 6) ?? "NULL";
-            if (authCloudToken is null || !PubSubHelper.Initialize(authCloudToken).Wait(10000))
+            if (authCloudToken is null || !PubSubHelper.Initialize(authCloudToken, sNodeCQS).Wait(10000))
             {
                 logger.Error($"Cannot init Pubsub => Please verify CloudToken, token={infoToken}...");
                 return;
@@ -76,12 +77,13 @@ namespace CloudSync.Process
                 logger.Info("0.1. Pulling ketqua phieu don tiep...");
                 var authToken = Config.FindValue("CloudToken");
                 var vLane = Config.GetValue<string>("Lane");
+                var sNodeCQS = Config.GetValue("urlCQSNode", "");
                 var apiMethodUrl = $"{apiCloudGetUrl}?msgToken={token}";
                 if (vLane.IsNotNullOrEmpty())
                 {
                     apiMethodUrl += $"&lane={vLane}";
                 }
-                var vListResult = await apiMethodUrl.GetAsJson<object>(authToken);
+                var vListResult = await apiMethodUrl.GetAsJson<object>(authToken, sNodeCQS);
                 if (vListResult != null)
                 {
                     logger.Info($"1.1. Pulled new result: data={JsonConvert.SerializeObject(vListResult)}");
