@@ -25,6 +25,14 @@
 - `Channel`: Tên channel nhận dữ liệu phiếu đón tiếp (mặc định do Cloud cung cấp)
 - `Lane`: Tên kênh lane nhận dữ liệu, khi cấu hình nhiều kênh (mặc định để trống)
 
+Các cấu hình sẽ ưu tiên theo thứ tự:
+
+1. Environment Variables
+2. Process config: ./Config/GetPhieuDonTiepPubSub.json
+3. App config: ./appsettings.json & ./appsettings.Production.json
+
+Trong quá trình phát triển, cấu hình có thể được đặt trong file: `appsettings.Development.json`
+
   
 ## - Build dự án:
 ### + Windows: 

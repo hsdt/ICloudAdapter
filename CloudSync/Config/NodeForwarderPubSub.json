@@ -1,0 +1,15 @@
+{
+  "Enabled": true,
+  "CloudGetUrl": "",
+  "CloudToken": "",
+  "NodeURL": "",
+  "ForwardAuthKey": "",
+  "Requests": [
+    {
+      "Topic": "emr/hs/pending",
+      "ExecuteApi": "his-emr_list?lane=hs",
+      "ForwardUrl": "https://httpbin.org/post",
+      "ForwardAuthKey": ""
+    }
+  ]
+}

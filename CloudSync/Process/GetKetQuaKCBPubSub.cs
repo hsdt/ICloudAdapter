@@ -159,5 +159,12 @@ namespace CloudSync.Process
         public string XMLData { get; set; }
         public string MaLanKham { get; set; }
         public string CCCD { get; set; }
+        public string FileDataURL { get; set; }
+        /// <summary>
+        /// 0: Kho BH
+        /// 1: Kho HSBA
+        /// 2: Kho GiayChuyenTuyen
+        /// </summary>
+        public int Type { get; set; }
     }
 }
