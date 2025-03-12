@@ -45,7 +45,8 @@ namespace CloudSync.Process
                 PubSubHelper.Subcribe(topic, async (subTopic, token) =>
                 {
                     this.latestMessageToken = token;
-                    var apiMethodUrl = $"{item.ExecuteApi}&msgToken={token}";
+                    // $"{item.ExecuteApi}&msgToken={token}";
+                    var apiMethodUrl = item.ExecuteApi.Interpolate(new { token });
                     logger.Info($"0.0. Raised event, subTopic={subTopic}, apiMethodUrl={apiMethodUrl}...");
                     var vGetData = await apiMethodUrl.GetAsJson<object[]>(authToken, vNodeURL);
                     if (vGetData.Length > 0)

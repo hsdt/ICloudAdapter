@@ -7,7 +7,7 @@
   "Requests": [
     {
       "Topic": "emr/hs/pending",
-      "ExecuteApi": "his-emr_list?lane=hs",
+      "ExecuteApi": "his-emr_list?lane=hs&msgToken={token}",
       "ForwardUrl": "https://httpbin.org/post",
       "ForwardAuthKey": ""
     }
