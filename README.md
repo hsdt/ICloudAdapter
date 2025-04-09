@@ -6,21 +6,21 @@
 - Link tại đây: https://github.com/hsdt/ICloudAdapter/releases
 - Giải nén file tải về: CloudSyncDist.zip
 
-2. Chạy với chế dộ Console
+2. Chạy với chế độ: Console
 - Chuyển vào thư mục đã giải nén bước 1: `cd CloudSyncDist`
 - Chạy ở chế độ console: `./CloudSync.exe run`
 
-2. Đăng ký windows service, khởi động cùng hệ thống
+3. Đăng ký khởi động cùng hệ thống (Windows)
 
 - Mở CMD và chạy với quyền Administrator
-- Lệnh đăng ký: `./CloudSync.exe install`
+- Lệnh đăng ký windows service: `./CloudSync.exe install`
 - Khởi động dịch vụ: `./CloudSync.exe start`
 
-3. Truy cập Swagger/test
+4. Truy cập Swagger/test
 - Truy cập link: http://localhost:5002/swagger/index.html
-- Thực hiện các hàm gửi dữ liệu test với license test.
+- Thực hiện các hàm gửi dữ liệu test giả lập với license test.
 
-# Cấu hình: NodeForwarderPubSub.json
+# Cấu hình: Config/NodeForwarderPubSub.json
 
 ```json
 {
@@ -48,7 +48,7 @@ Trong đó:
 - CloudToken: Token được cấp phát với HUB Cloud, dùng để khởi tạo và ExecuteApi
 - ForwardAuthKey: Access key của hệ thống được forward data tới, nếu không được thiết lập trong Requests sẽ lấy giá trị được cấu hình ngoài.
 
-# Cấu hình trong file Config/GetPhieuDonTiepPubSub.json
+# Cấu hình: Config/GetPhieuDonTiepPubSub.json
 ```json
 {
   "Enabled": true,
