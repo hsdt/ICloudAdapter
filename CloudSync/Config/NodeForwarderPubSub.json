@@ -3,7 +3,8 @@
   "CloudGetUrl": "",
   "CloudToken": "",
   "NodeURL": "",
-  "ForwardAuthKey": "",
+  "NodePubSubURL": "http://10.2.4.126:8000",
+  "ForwardAuthKey": "077b5f8d-ece4-4622-856c-066ae5e5e0ee",
   "Requests": [
     {
       "Topic": "emr/hs/pending",

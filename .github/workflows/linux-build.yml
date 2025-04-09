@@ -41,12 +41,12 @@ jobs:
       # - name: Test
       #   run: dotnet test
       - name: Publish
-        run: dotnet publish CloudSync -r linux-x64 -c Release -o Dist
+        run: dotnet publish CloudSync -r linux-x64 -c Release -o CloudSyncDist
       - name: Zip
-        run: zip -r Dist-${{ github.ref_name }}-linux-x64.zip Dist/ README.md
+        run: zip -r CloudSyncDist-${{ github.ref_name }}-linux-x64.zip CloudSyncDist/ README.md
       - name: Upload
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: Dist-${{ github.ref_name }}-linux-x64.zip
+          files: CloudSyncDist-${{ github.ref_name }}-linux-x64.zip
 
