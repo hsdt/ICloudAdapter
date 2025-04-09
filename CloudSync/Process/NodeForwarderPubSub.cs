@@ -24,6 +24,7 @@ namespace CloudSync.Process
             var authToken = Config.FindValue("CloudToken");
             //var subChannel = Config.FindValue("Channel", "phieukhamkq/pending");
             var vNodeURL = Config.FindValue("NodeURL", "");
+            var vNodePubSubURL = Config.FindValue("NodePubSubURL", "");
             var infoToken = authToken?.Substring(0, 6) ?? "NULL";
             var subRequests = Config.FindValue("Requests", "");
             if (subRequests.IsNullOrEmpty())
@@ -31,7 +32,7 @@ namespace CloudSync.Process
                 logger.Error("Pub/sub Requests chưa được cấu hình!");
                 return;
             }
-            if (authToken is null || !PubSubHelper.Initialize(authToken, vNodeURL).Wait(10000))
+            if (authToken is null || !PubSubHelper.Initialize(authToken, vNodeURL, vNodePubSubURL).Wait(10000))
             {
                 logger.Error($"Cannot init Pubsub => Please verify CloudToken, token={infoToken}...");
                 return;
@@ -49,42 +50,27 @@ namespace CloudSync.Process
                     var apiMethodUrl = item.ExecuteApi.Interpolate(new { token });
                     logger.Info($"0.0. Raised event, subTopic={subTopic}, apiMethodUrl={apiMethodUrl}...");
                     var vGetData = await apiMethodUrl.GetAsJson<object[]>(authToken, vNodeURL);
+                    //logger.Info($"1. Pull result, subTopic={subTopic}, apiMethodUrl={apiMethodUrl}...");
                     if (vGetData.Length > 0)
                     {
-                        var vResult = new TopicSubResult();
-                        vResult.Request = item;
-                        vResult.Token = token;
-                        vResult.Data = vGetData;
-                        this.Enqueue(vResult);
-                        // Alert scanner!
-                        this.Alert();
+                        foreach (var vData in vGetData)
+                        {
+                            var vResult = new TopicSubResult();
+                            vResult.Request = item;
+                            vResult.Token = token;
+                            vResult.Data = vData;
+                            this.Enqueue(vResult);
+                        }
+                        // Notify worker!
+                        this.Notify();
                     }
                     return true;
                 }, (subErr) =>
                 {
-                    if (subErr is Exception)
-                    {
-                        logger.Error("Please check subError!", subErr);
-                    }
-                    else
-                    {
-                        logger.Info($"Listening... subErr={subErr},subTopic={topic}");
-                    }
                     return true;
                 });
             }
             logger.Info($"Done sub topic length: {vSubRequests.Length}!");
-        }
-
-        /// <summary>
-        /// - Kéo các kết quả phiếu đón tiếp từ Cloud 
-        /// - Đẩy vào queue chờ xử lý.
-        /// </summary>
-        protected override void Scan()
-        {
-            // TODO: something
-            logger.Info("Process still alive!");
-            this.Notify();
         }
 
         /// <summary>
@@ -102,8 +88,9 @@ namespace CloudSync.Process
             var vForwardAuthKey = data.Request.ForwardAuthKey ?? Config.FindValue("ForwardAuthKey");
             var client = new RestClient(data.Request.ForwardUrl);
             // Gửi kết quả về HIS.
+            var vData = JsonConvert.SerializeObject(data.Data);
             var vRequest = new RestRequest(data.Request.ForwardUrl, Method.Post)
-                .AddJsonBody(data.Data.ToString());
+                .AddJsonBody(vData);
             if (vForwardAuthKey.IsNotNullOrEmpty())
             {
                 vRequest.AddHeader("Authorization", vForwardAuthKey);
@@ -116,7 +103,7 @@ namespace CloudSync.Process
             }
             else
             {
-                logger.Error($"2. Gửi kết quả thất bại: url={data.Request.ForwardUrl},status={vResponse.StatusCode},error={vResponse.Content}");
+                logger.Error($"2. Gửi kết quả thất bại: url={data.Request.ForwardUrl},status={vResponse.StatusCode},error={vResponse.Content}\n|data={vData}");
             }
         }
     }
