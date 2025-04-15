@@ -4,13 +4,13 @@
   "CloudToken": "",
   "NodeURL": "",
   "NodePubSubURL": "http://10.2.4.126:8000",
-  "ForwardAuthKey": "077b5f8d-ece4-4622-856c-066ae5e5e0ee",
+  "ForwardAuthKey": "token 077b5f8d-ece4-4622-856c-066ae5e5e0ee",
   "Requests": [
     {
       "Topic": "emr/hs/pending",
       "ExecuteApi": "his-emr_list?lane=hs&msgToken={token}",
       "ForwardUrl": "https://httpbin.org/post",
-      "ForwardAuthKey": ""
+      "ForwardAuthKey": null
     }
   ]
 }

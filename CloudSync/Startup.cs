@@ -1,5 +1,6 @@
 using CloudSync.Services;
 using HSDT.AutoSync;
+using HSDT.Common.Helper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -59,7 +60,7 @@ namespace CloudSync
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || EnvHelper.GetAppConfig("SwaggerAPI") == "true")
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
